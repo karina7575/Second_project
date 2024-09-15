@@ -1,9 +1,6 @@
 package homework7;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Runner {
     public static void main(String[] args) {
@@ -16,7 +13,7 @@ public class Runner {
     }
 
     static void putOnLentAndClaim(String filename) {
-        Map<String, Integer> luggageLenta = new LinkedHashMap<>();
+        Set<String> luggageBelt = new LinkedHashSet<>();
         int filledCells = 10;
         String[] arrayLuggage = new String[2];
         Scanner scanner = new Scanner(Runner.class.getClassLoader().getResourceAsStream(filename));
@@ -26,13 +23,15 @@ public class Runner {
             System.out.println("Начинается загрузка на ленту.");
             for (int i = 0; i < filledCells; i++) {
                 arrayLuggage = scanner.nextLine().split(";");
-                luggageLenta.put(arrayLuggage[0], Integer.parseInt(arrayLuggage[1]));
+                luggageBelt.add(arrayLuggage[0]);
             }
+            System.out.println(luggageBelt);
             System.out.println("Лента загружена, начинается выдача багажа.");
             for (int i = 0; i < filledCells; i++) {
-                Map.Entry<String, Integer> firstEntry = luggageLenta.entrySet().iterator().next();
-                System.out.println(firstEntry.getKey() + " - выдан");
-                luggageLenta.remove(firstEntry.getKey());
+                //Set.Entry<Integer> firstEntry = luggageBelt.entrySet().iterator().next();
+                Iterator<String> iterator = luggageBelt.iterator();
+                System.out.println(iterator.next() + " - выдан");
+                iterator.remove();
             }
             System.out.println("Лента пустая, закончена выдача багажа");
         }
