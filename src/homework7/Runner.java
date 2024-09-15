@@ -15,20 +15,20 @@ public class Runner {
     static void putOnLentAndClaim(String filename) {
         Set<String> luggageBelt = new LinkedHashSet<>();
         int filledCells = 10;
+        int flag = 0;
         String[] arrayLuggage = new String[2];
         Scanner scanner = new Scanner(Runner.class.getClassLoader().getResourceAsStream(filename));
 
         scanner.nextLine();
         while (scanner.hasNext()) {
             System.out.println("Начинается загрузка на ленту.");
-            for (int i = 0; i < filledCells; i++) {
+            for (int i = 0; i < filledCells && scanner.hasNext(); i++) {
                 arrayLuggage = scanner.nextLine().split(";");
                 luggageBelt.add(arrayLuggage[0]);
+                flag = i + 1;
             }
-            System.out.println(luggageBelt);
             System.out.println("Лента загружена, начинается выдача багажа.");
-            for (int i = 0; i < filledCells; i++) {
-                //Set.Entry<Integer> firstEntry = luggageBelt.entrySet().iterator().next();
+            for (int i = 0; i < flag; i++) {
                 Iterator<String> iterator = luggageBelt.iterator();
                 System.out.println(iterator.next() + " - выдан");
                 iterator.remove();
