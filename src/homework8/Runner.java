@@ -1,16 +1,21 @@
 package homework8;
 
-import homework8.burn_all.Burning;
 import homework8.burn_all.Uranium;
 import homework8.burn_all.Wood;
-import homework8.divination_found_love.Divination;
 import homework8.divination_found_love.Human;
 import homework8.fruits_farm.Apple;
 import homework8.fruits_farm.Apricot;
-import homework8.fruits_farm.Garden;
+import homework8.reviews.Review;
 import homework8.ruler.Animal;
 import homework8.ruler.Boat;
-import homework8.ruler.Ruler;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Runner {
     public static void main(String[] args) {
@@ -23,10 +28,10 @@ public class Runner {
         //Создать с помощью лямбд выражений 2 фермы: яблочная, абрикосовая.
         //Яблочная ферма должна отдавать яблоко(не фрукт!), абрикосовая - абрикос(не фрукт!).
 
-        Garden <Apple> appleFarm = () -> new Apple();
-        Garden <Apricot> apricotFarm = () -> new Apricot();
-        Apple apple = appleFarm.makeFruit();
-        Apricot apricot = apricotFarm.makeFruit();
+        Supplier<Apple> appleFarm = () -> new Apple();
+        Supplier<Apricot> apricotFarm = () -> new Apricot();
+        Apple apple = appleFarm.get();
+        Apricot apricot = apricotFarm.get();
 
         //Задание №2: Поиск пары с помощью гадания
         //Создать функциональный интерфейс гадание, который на вход принимает аргумент любого типа,
@@ -36,20 +41,22 @@ public class Runner {
         //бабку гадалку: принимает Человека(возраст, рост),
         //возвращает да - если (возраст + рост) больше 210, нет - если меньше или равно
 
-        Divination <String> chamomile = (String name) -> {
+        Predicate<String> chamomile = (String name) -> {
             if (name.length() % 2 == 0) {
-                    return true;
-                }
-                else return false;
+                return true;
+            } else {
+                return false;
+            }
         };
-        Divination <Human> grandma = (Human human) -> {
+        Predicate<Human> grandma = (Human human) -> {
             if ((human.getAge() + human.getHeight()) > 210) {
                 return true;
+            } else {
+                return false;
             }
-            else return false;
         };
-        System.out.println(chamomile.guess("Мария"));
-        System.out.println(grandma.guess(new Human(54, 165)));
+        System.out.println(chamomile.test("Мария"));
+        System.out.println(grandma.test(new Human(54, 165)));
 
         //Задание №3: Гори ясно!
         //Создать функциональный интерфейс сжигание, ничего не возвращает, принимает аргумент
@@ -60,14 +67,14 @@ public class Runner {
         //атомный реактор: принимает в себя уран, печатает на экран: зеленый свет вокруг!
         //костер: принимает в себя дерево, печатает на экран: желто-красный свет вокруг!
 
-        Burning<Uranium> nuclearReactor = (Uranium uranium) -> {
+        Consumer<Uranium> nuclearReactor = (Uranium uranium) -> {
             System.out.println("Зеленый свет вокруг!");
         };
-        Burning <Wood> bonfire = (Wood wood) -> {
+        Consumer<Wood> bonfire = (Wood wood) -> {
             System.out.println("Желто-красный свет вокруг!");
         };
-        nuclearReactor.burn(new Uranium());
-        bonfire.burn(new Wood());
+        nuclearReactor.accept(new Uranium());
+        bonfire.accept(new Wood());
 
         //Задание №4: универсальная линейка
         //Создать функциональный интерфейс линейка: принимает в себя любой тип, возвращает Integer
@@ -77,10 +84,10 @@ public class Runner {
         //Измеритель лодок: на вход лодка, возвращает длину лодки
         //Измеритель животных: на вход животное, возвращает сумму длин тела и хвоста
 
-        Ruler<Boat> boatRuler = (Boat boat) -> boat.getLenght();
-        Ruler <Animal> animalRuler = (Animal animal) -> animal.getBodyLenght() + animal.getTailLenght();
-        System.out.println(boatRuler.rule(new Boat(150)));
-        System.out.println(animalRuler.rule(new Animal(100, 65)));
+        Function<Boat, Integer> boatRuler = (Boat boat) -> boat.getLenght();
+        Function<Animal, Integer> animalRuler = (Animal animal) -> animal.getBodyLenght() + animal.getTailLenght();
+        System.out.println(boatRuler.apply(new Boat(150)));
+        System.out.println(animalRuler.apply(new Animal(100, 65)));
 
         //Задание №5: сортировка отзывов
         //Создать класс отзыв с полями: id отзыва, текст отзыва, количество лайков,
@@ -99,5 +106,38 @@ public class Runner {
         //отзыв №2: 2, так себе товар, 100, 25.01.2024 16:37
         //отзыв №4: 4, плохой товар, 100, 25.01.2024 13:37
         //отзыв №3: 3, плохой товар, 100, 25.01.2024 13:37
+
+        Review review1 = new Review(1, "отличный товар", 200);
+        Review review2 = new Review(2, "так себе товар", 100);
+        Review review3 = new Review(4, "плохой товар", 100);
+        Review review4 = new Review(3, "плохой товар", 100);
+
+        ArrayList<Review> reviews = new ArrayList<>(List.of(review1, review2, review3, review4));
+        Comparator<Review> reviewComparator = (rev1, rev2) -> {
+            if (rev1.getLikes() < rev2.getLikes()) {
+                return 1;
+            }
+            else if (rev1.getLikes() > rev2.getLikes()) {
+                return -1;
+            }
+            else {
+                if (rev1.getDateTime() == rev2.getDateTime()) {
+                    if (rev1.getId() < rev2.getId()) {
+                        return 1;
+                    }
+                    else if (rev1.getId() > rev2.getId()) {
+                        return -1;
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+                else {
+                    return rev1.getDateTime().compareTo(rev2.getDateTime());
+                }
+            }
+        };
+        reviews.sort(reviewComparator);
+        System.out.println(reviews);
     }
 }
