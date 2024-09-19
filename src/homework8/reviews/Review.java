@@ -8,11 +8,11 @@ public class Review {
     private int likes;
     private LocalDateTime dateTime;
 
-    public Review(int id, String text, int likes) {
+    public Review(int id, String text, int likes, LocalDateTime dateTime) {
         this.id = id;
         this.text = text;
         this.likes = likes;
-        this.dateTime = LocalDateTime.now();
+        this.dateTime = dateTime;
     }
 
     @Override

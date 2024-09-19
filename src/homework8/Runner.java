@@ -9,9 +9,11 @@ import homework8.reviews.Review;
 import homework8.ruler.Animal;
 import homework8.ruler.Boat;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -107,13 +109,12 @@ public class Runner {
         //отзыв №4: 4, плохой товар, 100, 25.01.2024 13:37
         //отзыв №3: 3, плохой товар, 100, 25.01.2024 13:37
 
-        Review review1 = new Review(1, "отличный товар", 200);
-        Review review2 = new Review(2, "так себе товар", 100);
-        Review review3 = new Review(4, "плохой товар", 100);
-        Review review4 = new Review(3, "плохой товар", 100);
+        Review review1 = new Review(1, "отличный товар", 200, LocalDateTime.now());
+        Review review2 = new Review(2, "так себе товар", 100, LocalDateTime.of(2015, 9, 2, 14, 0));
+        Review review3 = new Review(4, "плохой товар", 100, LocalDateTime.of(2022, 4, 9, 14, 45));
+        Review review4 = new Review(3, "плохой товар", 100, LocalDateTime.of(2014, 9, 19, 14, 5));
 
-        ArrayList<Review> reviews = new ArrayList<>(List.of(review1, review2, review3, review4));
-        Comparator<Review> reviewComparator = (rev1, rev2) -> {
+        TreeSet<Review> reviews = new TreeSet<>((rev1, rev2) -> {
             if (rev1.getLikes() < rev2.getLikes()) {
                 return 1;
             }
@@ -136,8 +137,12 @@ public class Runner {
                     return rev1.getDateTime().compareTo(rev2.getDateTime());
                 }
             }
-        };
-        reviews.sort(reviewComparator);
-        System.out.println(reviews);
+        });
+        reviews.add(review1);
+        reviews.add(review2);
+        reviews.add(review3);
+        reviews.add(review4);
+        System.out.println("Отсортированные отзывы " + reviews);
+
     }
 }
