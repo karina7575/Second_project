@@ -10,6 +10,10 @@ public class Runner {
         //ИСПОЛЬЗОВАНИЕ FOR, WHILE ЗАПРЕЩЕНО В ЭТОЙ ДЗ! Только СТРИМЫ.
         AtomicInteger num = new AtomicInteger(1);
         //List list1 = Stream.generate(() -> Car).limit(50).forEach();
+        AtomicInteger numbers1 = new AtomicInteger(1);
+        AtomicInteger numbers2 = new AtomicInteger(1);
+        //List list1 = Stream.generate(() -> Car).limit(50).forEach();
+
         //Задание №1 - Список спец номеров
         //Нам необходимо распечатать список номеров, которые принадлежат чиновникам
         //1. Создать класс машина. У машины есть номер.

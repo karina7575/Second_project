@@ -1,7 +1,36 @@
 package homework9.ex3;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class Runner {
     public static void main(String[] args) {
+
+        Skyscraper worldTradeCenter = new Skyscraper("Всемирный торговый центр", 541);
+        Skyscraper shanghaiTower = new Skyscraper("Шанхайская башня", 632);
+        Skyscraper burjKhalifa = new Skyscraper("Бурдж-Халифа", 828);
+        Skyscraper pinan = new Skyscraper("Международный финансовый центр Пинань", 599);
+        Skyscraper abrajAlBayt = new Skyscraper("Абрадж аль-Бейт", 601);
+        Skyscraper lotteWorldCenter = new Skyscraper("Всемирный центр Лотте", 555);
+
+        List <Skyscraper> skyscrappers = new ArrayList<>();
+        skyscrappers.add(worldTradeCenter);
+        skyscrappers.add(shanghaiTower);
+        skyscrappers.add(burjKhalifa);
+        skyscrappers.add(pinan);
+        skyscrappers.add(abrajAlBayt);
+        skyscrappers.add(lotteWorldCenter);
+        skyscrappers.add(burjKhalifa);
+        List <Skyscraper> listNoDuplicates = skyscrappers.stream().distinct().collect(Collectors.toUnmodifiableList());
+        listNoDuplicates.stream().limit(3).forEach(System.out::println);
+        Optional mostHeight = listNoDuplicates.stream().max(Comparator.comparingInt(Skyscraper::getHeight));
+        System.out.println("Самый большой небоскреб - " + mostHeight.get());
+        listNoDuplicates.stream().filter((e) -> e.getHeight() > 1000).forEach(e -> System.out.println(e));
+
         //Задание №3 - Небоскребы, небоскребы, а я...
         //1. Создать Класс Небоскреб - имя небоскреба, его высота в метрах.
         //2. Необходимо создать небоскребы:
